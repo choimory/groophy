@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 클래스지정 -->
+<mapper namespace="com.groophy.dao.BoardDAO">
+
+<!-- 매핑할 메소드 지정 -->
+	<select id="createBoardTable" parameterType="map">
+		${createBoardSQL}
+	</select>
+	<select id="deleteBoardTable" parameterType="map">
+		${deleteBoardSQL}
+	</select>
+</mapper>

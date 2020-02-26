@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.groophy.dao.StudyDAO">
+<resultMap type="memberInfoDTO" id="memberInfoDTO">
+		<result property="uId" column="MEMBER_ID" />
+		<result property="uPw" column="PASSWORD" />
+		<result property="uNickName" column="NICKNAME" />
+		<result property="uEmail" column="EMAIL" />
+		<result property="uPhone" column="PHONE" />
+		<result property="uGender" column="GENDER" />
+		<result property="uPhoto" column="MEMBER_PHOTO" />
+		<result property="uIntroduce" column="MEMBER_INTRODUCE" />
+		<result property="uRegDate" column="MEMBER_REGDATE" />
+	</resultMap>
+	<resultMap type="memberStatDTO" id="memberStatDTO">
+		<result property="uId" column="MEMBER_ID" />
+		<result property="gIndex" column="GROUP_ID" />
+		<result property="accept" column="ACCEPT" />
+		<result property="studyCount" column="STUDYCOUNT" />
+		<result property="studySuccess" column="STUDYSUCCESS" />
+		<result property="kickCount" column="KICKCOUNT" />
+		<result property="checkCount" column="CHECKCOUNT" />
+		<result property="checkSuccess" column="CHECKSUCCESS" />
+		<result property="ban" column="BAN" />
+	</resultMap>
+<resultMap type="groupDTO" id="groupDTO">
+		<result property="gIndex" column="GROUP_ID" />
+		<result property="gTitle" column="GROUP_TITLE" />
+		<result property="gName" column="GROUP_NAME" />
+		<result property="uId" column="MEMBER_ID" />
+		<result property="gIntroduce" column="GROUP_INTRODUCE" />
+		<result property="gCategory" column="CATEGORY" />
+		<result property="gProvince" column="PROVINCE" />
+		<result property="gCity" column="CITY" />
+		<result property="gDifficulty" column="DIFFICULTY" />
+		<result property="gStudyOfWeek" column="STUDYOFWEEK" />
+		<result property="gStartDate" column="STARTDATE" />
+		<result property="gEndDate" column="ENDDATE" />
+		<result property="gStudyOfWeek" column="STUDYOFWEEK" />
+		<result property="gCurrentNumber" column="CURRENT_NUM" />
+		<result property="gMaximumNumber" column="MAXIMUM_NUM" />
+		<result property="gRegDate" column="GROUP_REGDATE" />
+		<result property="gProgress" column="PROGRESS" />
+		<result property="gPhoto" column="GROUP_PHOTO" />
+	</resultMap>
+	<resultMap type="calendarDTO" id="calendarDTO">
+		<result property="gIndex" column="GROUP_ID" />
+		<result property="ctitle" column="ctitle" />
+		<result property="cstartyear" column="cstartyear" />
+		<result property="cstartmonth" column="cstartmonth" />
+		<result property="cstartdate" column="cstartdate" />
+		<result property="cstarthour" column="cstarthour" />
+		<result property="cstartminutes" column="cstartminutes" />
+		<result property="cendyear" column="cendyear" />
+		<result property="cendmonth" column="cendmonth" />
+		<result property="cenddate" column="cenddate" />
+		<result property="cendhour" column="cendhour" />
+		<result property="cendminutes" column="cendminutes" />
+		<result property="callday" column="callday" />
+	</resultMap>
+
+	<select id="gotomain" parameterType="int" resultMap="groupDTO">
+		SELECT * FROM group_info WHERE group_id = #{gIndex}
+	</select>	
+	
+	<select id="gotocalendar" parameterType="int" resultMap="calendarDTO">
+		SELECT * FROM calendar WHERE group_id = #{gIndex}
+	</select>	
+	
+	<insert id="savecalendar" parameterType="calendarDTO">
+		INSERT INTO calendar VALUES (null,#{gIndex},#{ctitle},#{cstartyear},#{cstartmonth},#{cstartdate},#{cstarthour},#{cstartminutes},
+		#{cendyear},#{cendmonth},#{cenddate},#{cendhour},#{cendminutes},#{callday})
+	</insert>	
+	
+	<select id="gotomap" parameterType="int" resultType="mapDTO"> SELECT * FROM map WHERE group_id = #{gIndex} </select>
+
+	<update id="savelocation" parameterType="mapDTO"> UPDATE map SET mLocation = #{mLocation} WHERE group_id = #{gIndex} </update>
+	
+	<select id="checkifleader" parameterType="int" resultType="string"> SELECT member_id FROM Group_info WHERE group_id = #{gIndex} </select>
+	
+	<update id="withdraw" parameterType="string"> UPDATE Member_stat SET group_id = 0, accept = 0 WHERE Member_id = #{uId} </update>
+	
+	<select id="checkcurrentnum" parameterType="int" resultType="int"> SELECT current_num FROM group_info WHERE group_id = #{gIndex} </select>
+	
+	<update id="minuscurrentnum" parameterType="groupDTO"> UPDATE group_info SET current_num = #{gCurrentNumber} WHERE group_id = #{gIndex} </update>
+	
+	<select id="checkgroup" parameterType="string" resultType="int"> SELECT group_id FROM member_stat WHERE member_id = #{uId} </select>
+	
+	<select id="checkkickrate" parameterType="string" resultType="int"> SELECT kickcount FROM member_stat WHERE member_id = #{uId} </select>
+	
+	<update id="upkickrate" parameterType="memberStatDTO"> UPDATE member_stat SET kickcount = #{kickCount} WHERE member_id = #{uId} </update>
+	
+	<select id="getallemail" parameterType="int" resultType="map">
+	SELECT NICKNAME, EMAIL FROM MEMBER_STAT 
+		INNER JOIN MEMBER_INFO
+		ON MEMBER_STAT.MEMBER_ID = MEMBER_INFO.MEMBER_ID  
+		WHERE GROUP_ID=#{gIndex} AND ACCEPT=1
+	</select>
+	
+	<select id="lineup" parameterType="int" resultType="map">
+	SELECT * FROM MEMBER_STAT 
+		INNER JOIN MEMBER_INFO
+		ON MEMBER_STAT.MEMBER_ID = MEMBER_INFO.MEMBER_ID  
+		WHERE GROUP_ID=#{gIndex} AND ACCEPT=1
+	</select>
+	
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:c="http://www.springframework.org/schema/c"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	
+	<!-- board bean -->
+	<context:component-scan base-package="com.groophy.dao" />
+	<context:component-scan base-package="com.groophy.service"/>
+	<!-- end board bean -->
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- root context :: db관련 기능의 객체를 생성하는 container로 사용 -->
+		
+
+
+	<!-- DB -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/groophy"/>
+		<property name="username" value="root"/>
+		<property name="password" value="0000"/>
+	</bean> 
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource"/>
+		<property name="configLocation" value="classpath:/mybatis-config.xml" />
+		<property name="mapperLocations" value="classpath:/mappers/**" />
+	</bean>	
+	<bean id="sqlSessionTmplt" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>	
+	</bean>	
+	<bean id="jdbcTmplt" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	
+	<!-- SERVICE -->
+	<bean id="groophyService" class="com.groophy.service.GroophyServiceImpl">
+		<!-- <property name="boardDAO" ref="boardDAO"/> -->
+		<property name="groupDAO" ref="groupDAO"/>
+		<property name="memberDAO" ref="memberDAO"/>
+	</bean>
+	<bean id="groupService" class="com.groophy.service.GroupServiceImpl">
+		<!-- <property name="boardDAO" ref="boardDAO"/> -->
+		<property name="groupDAO" ref="groupDAO"/>
+		<property name="memberDAO" ref="memberDAO"/>
+		<property name="hashingComponent" ref="hashingComponent"/>
+	</bean>
+	<bean id="memberService" class="com.groophy.service.MemberServiceImpl">
+		<property name="memberDAO" ref="memberDAO"/>
+		<property name="groupDAO" ref="groupDAO"/>
+		<property name="hashingComponent" ref="hashingComponent"/>
+	</bean>
+	<bean id="studyService" class="com.groophy.service.StudyServiceImpl">
+		<!-- <property name="boardDAO" ref="boardDAO"/> -->
+		<property name="groupDAO" ref="groupDAO"/>
+		<property name="memberDAO" ref="memberDAO"/>
+		<property name="studyDAO" ref="studyDAO"/>
+	</bean>
+	<bean id="adminService" class="com.groophy.service.AdminServiceImpl">
+		<property name="groupDAO" ref="groupDAO"/>
+		<property name="memberDAO" ref="memberDAO"/>
+		<property name="studyDAO" ref="studyDAO"/>
+	</bean>
+	
+	
+	<!-- DAO -->
+	<!-- <bean id="boardDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	 	<property name="sqlSessionTemplate" ref="sqlSessionTmplt"/>
+		<property name="mapperInterface" value="com.groophy.dao.BoardDAO"/>
+	</bean> -->
+	<bean id="groupDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	 	<property name="sqlSessionTemplate" ref="sqlSessionTmplt"/>
+		<property name="mapperInterface" value="com.groophy.dao.GroupDAO"/>
+	</bean>
+	<bean id="memberDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	 	<property name="sqlSessionTemplate" ref="sqlSessionTmplt"/>
+		<property name="mapperInterface" value="com.groophy.dao.MemberDAO"/>
+	</bean>
+	<bean id="quizDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	 	<property name="sqlSessionTemplate" ref="sqlSessionTmplt"/>
+		<property name="mapperInterface" value="com.groophy.dao.QuizDAO"/>
+	</bean>
+	<bean id="studyDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+	 	<property name="sqlSessionTemplate" ref="sqlSessionTmplt"/>
+		<property name="mapperInterface" value="com.groophy.dao.StudyDAO"/>
+	</bean>
+	
+	<!-- OTHERS -->
+	<bean class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" id="bcrypt">	
+	</bean>
+	<bean class="org.springframework.security.crypto.password.Pbkdf2PasswordEncoder" id="pbkdf2">	
+	</bean>
+	<bean id="hashingComponent" class="com.groophy.extra.HashingComponent">
+		<property name="bcrypt" ref="bcrypt"/>
+		<property name="pbkdf2" ref="pbkdf2"/>
+	</bean>
+		
+</beans>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.groophy.dao.GroupDAO">
+<resultMap type="groupDTO" id="groupDTO">
+		<result property="gIndex" column="GROUP_ID" />
+		<result property="gTitle" column="GROUP_TITLE" />
+		<result property="gName" column="GROUP_NAME" />
+		<result property="uId" column="MEMBER_ID" />
+		<result property="gIntroduce" column="GROUP_INTRODUCE" />
+		<result property="gCategory" column="CATEGORY" />
+		<result property="gProvince" column="PROVINCE" />
+		<result property="gCity" column="CITY" />
+		<result property="gDifficulty" column="DIFFICULTY" />
+		<result property="gStartDate" column="STARTDATE" />
+		<result property="gEndDate" column="ENDDATE" />
+		<result property="gStudyOfWeek" column="STUDYOFWEEK" />
+		<result property="gCurrentNumber" column="CURRENT_NUM" />
+		<result property="gMaximumNumber" column="MAXIMUM_NUM" />
+		<result property="gRegDate" column="GROUP_REGDATE" />
+		<result property="gProgress" column="PROGRESS" />
+		<result property="gPhoto" column="GROUP_PHOTO" />
+	</resultMap>
+	<resultMap type="groupCommentDTO" id="groupCommentDTO">
+		<result property="gcIndex" column="GC_ID" />
+		<result property="gIndex" column="GROUP_ID" />
+		<result property="uId" column="MEMBER_ID" />
+		<result property="gcComment" column="GC_COMMENT" />
+		<result property="gcRegDate" column="GC_REGDATE" />
+		<result property="gcReport" column="GC_REPORT" />
+		<result property="gcTeam" column="GC_TEAM" />
+		<result property="gcStep" column="GC_STEP" />
+		<result property="gcIndent" column="GC_INDENT" />
+	</resultMap>
+	
+	
+	<select id="getMainGroup" resultMap="groupDTO">
+		SELECT * FROM GROUP_INFO ORDER BY GROUP_ID DESC LIMIT 0,2
+	</select>
+	
+	<select id="getAllGroup" parameterType="groupKeyDTO" resultMap="groupDTO">
+		SELECT * FROM GROUP_INFO WHERE PROGRESS=0 ORDER BY GROUP_ID DESC LIMIT #{pageStart}, #{pageSize}
+	</select>
+	
+	<!-- 동적 쿼리  -->	
+	<sql id="search">
+		<if test="gProvince != null">
+			WHERE
+			
+			PROVINCE=#{gProvince} AND 
+			CITY=#{gCity} AND 
+			<!-- DIFFICULTY=#{gDifficulty} AND  -->
+			CATEGORY=#{gCategory}
+		</if>
+	</sql>
+	<!-- end 동적쿼리  -->
+	
+	<select id="getSearchGroup" parameterType="groupKeyDTO" resultMap="groupDTO">
+			<!-- TODO : 선택지에 따른 동적인 쿼리가 가도록 dynamic mybatis query화 -->
+			SELECT * FROM GROUP_INFO 
+			
+			<include refid="search"></include>
+			
+			ORDER BY GROUP_ID DESC 
+			
+			LIMIT #{pageStart}, #{pageSize}			
+	</select>
+	
+	<insert id="createGroup" parameterType="groupDTO">
+		INSERT INTO GROUP_INFO VALUES(0,#{gTitle},#{gName},#{uId},#{gIntroduce},#{gCategory},#{gProvince},#{gCity},#{gDifficulty},#{gStartDate},#{gEndDate},#{gStudyOfWeek},1,#{gMaximumNumber},NOW(),0,#{gPhoto})
+	</insert>
+	<select id="getGroupIndex" parameterType="string" resultType="int">
+		SELECT GROUP_ID FROM GROUP_INFO WHERE MEMBER_ID=#{uId}
+	</select>
+	<select id="getGroupDTO" parameterType="string" resultMap="groupDTO">
+		SELECT * FROM GROUP_INFO WHERE MEMBER_ID=#{uId}
+	</select>
+	<select id="getGroupDTO2" parameterType="int" resultMap="groupDTO">
+		SELECT * FROM GROUP_INFO WHERE GROUP_ID=#{gIndex}
+	</select>
+	<select id="getGroupComments" parameterType="int" resultMap="groupCommentDTO">
+		SELECT * FROM GROUP_COMMENT WHERE GROUP_ID=#{gIndex}
+	</select>
+	<insert id="writeComment" parameterType="groupCommentDTO">
+		INSERT INTO GROUP_COMMENT VALUES(0,#{gIndex},#{uId},#{gcComment},NOW(),0,#{gcTeam},0,0)
+	</insert>
+	<delete id="deleteComment" parameterType="groupCommentDTO">
+		DELETE FROM GROUP_COMMENT WHERE GROUP_ID=#{gIndex} AND GC_ID=#{gcIndex}
+	</delete>
+	<update id="updateGroup" parameterType="groupCommentDTO">
+		UPDATE GROUP_INFO 
+		SET 
+		GROUP_TITLE=#{gTitle}, GROUP_NAME=#{gName}, GROUP_INTRODUCE=#{gIntroduce}, CATEGORY=#{gCategory}, 
+		PROVINCE=#{gProvince}, CITY=#{gCity}, DIFFICULTY=#{gDifficulty}, 
+		STUDYOFWEEK=#{gStudyOfWeek}, STARTDATE=#{gStartDate}, ENDDATE=#{gEndDate}, GROUP_PHOTO=#{gPhoto} 
+		WHERE 
+		GROUP_ID=#{gIndex}
+	</update>
+	<update id="increaseCurrentNum" parameterType="int">
+		UPDATE GROUP_INFO SET CURRENT_NUM=CURRENT_NUM+1 WHERE GROUP_ID=#{gIndex}
+	</update>
+	<update id="progressStart" parameterType="int">
+		UPDATE GROUP_INFO SET PROGRESS=1 WHERE GROUP_ID=#{gIndex}
+	</update>
+	<delete id="deleteGroup" parameterType="int">
+		DELETE FROM GROUP_INFO WHERE GROUP_ID=#{gIndex}
+	</delete>
+		
+	<select id="getRecordCount" parameterType="groupKeyDTO" resultType="int">
+	
+			SELECT COUNT(GROUP_ID) FROM GROUP_INFO 		
+			
+			<include refid="search"></include>
+			
+	</select>
+	<update id="updateGroupPhoto">
+		UPDATE GROUP_INFO SET GROUP_PHOTO=#{gPhoto} WHERE GROUP_ID=#{gIndex}
+	</update>
+	<update id="decreaseCurrentNum" parameterType="int">
+		UPDATE GROUP_INFO SET CURRENT_NUM=CURRENT_NUM-1 WHERE GROUP_ID=#{gIndex}
+	</update>
+</mapper>
