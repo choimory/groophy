@@ -1,0 +1,39 @@
+﻿-기존 스터디그룹사이트 분석-
+http://dongnemoim.com/  동네모임웹사이트
+
+https://m.blog.naver.com/PostView.nhn?blogId=kelly99226&logNo=220730285843&cat
+egoryNo=66&proxyReferer=&proxyReferer=http%3A%2F%2Fwww.google.co.kr%2Furl%3Fsa
+%3Dt%26rct%3Dj%26q%3D%26esrc%3Ds%26source%3Dweb%26cd%3D6%26ved%3D2ahUKEwiEotbVy4
+_eAhXO62EKHRllD9IQFjAFegQIAxAB%26url%3Dhttp%253A%252F%252Fm.blog.naver.com%252FP
+ostView.nhn%253FblogId%253Dkelly99226%2526logNo%253D220730285843%2526categoryNo%25
+3D66%2526proxyReferer%253D%26usg%3DAOvVaw1xoZp49Nbp9dVCYP2ARhZh
+
+공부트리어플소개
+
+https://studysearch.co.kr 서터디서치(크롬으로만 작동) (유료스터디그룹)
+https://studysearch.co.kr/product/theme/26/  스터디그룹들
+
+https://www.gohackers.com/?c=village/village_info/study  해커스스터디그룹게시판
+http://lets-study.co.kr/
+http://dongnemoim.com/
+
+
+
+
+지역/분야/제목으로 검색하여 모집중인 스터디그룹 리스트를 나열,
+해당 스터디그룹의 진행일정 및 간략소개, 댓글기능, 연락처공유 기능까지만 제공
+
+
+장점 : 분류별로 스터디를 확인하고 빠른 연락처 공유
+단점 : 단순 게시판정도의 기능들
+
+
+
+
+-우리 프로젝트 분석 요구사항분석-
+
+기존사이트 기능에 덧붙여
+해당 스터디그룹만의 온라인상의 공간과 
+공간내에서 사용할수 있는 각종기능들 추가제공
+
+

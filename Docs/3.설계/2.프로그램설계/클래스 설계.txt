@@ -1,0 +1,108 @@
+-com.groophy.controller
+페이지별분류 or 기능별분류(선생님 권장, 기능의 규모에 따라 유동적분류)
+
+
+페이지별 분류
+GroophyController
+MainPageController
+IncruitController
+GroupController
+HelpController
+AdminController
+MemberController
+
+or
+
+기능별 분류
+GroophyController
+MemberController
+BoardController
+GroupController
+ProgressController
+QuizController (Progress에 포함할지 단독분류할지 여부)
+AdminController (현 규모는 작지만 쉽게 인식, 추후 기능확장을 고려해 단독분류)
+
+
+
+
+quiz board 
+
+progress 
+
+group member admin groophy 
+
+
+-com.groophy.service
+Controller와의 1:1매칭, 
+한 서비스에서 여러 분류의 DAO사용을 고려해 서비스클래스는 여러개의 DAO를 필드로 지닐수 있음
+
+
+GroophyService
+MemberService
+BoardService
+GroupService
+ProgressService
+QuizService
+AdminService
+
+
+
+
+-com.groophy.dao
+콤팩트하게 딱 DB와의 CRUD만 수행하도록
+
+GroophyDAO
+MemberDAO
+BoardDAO
+GroupDAO
+ProgressDAO
+QuizDAO
+AdminDAO
+
+
+
+
+-com.groophy.dto
+많은컬럼보단 적은컬럼로 많은 테이블을 구성해 
+ForeignKey, Join을 이용해 각종 테이블을 하나로 결합하여 활용
+
+
+(게시판, 퀴즈 하나의 테이블로 모든 그룹 게시판 관리시)
+MemberInfoDTO : uId, uPw, uEmail, uPhoneNum(01011112222), uSi, uDo, uPhoto, uIntroduce, uRegDate, 인증여부(True/False boolean)
+MemberStatDTO : checkSuccess, checkCount, studySuccess, studyCount, kickCount, ban, uId(FK),gIndex(FK), accept
+GroupDTO : gIndex, gName, gTitle, gIntroduce, gType ,gDo, gDifficult, gSi, gStartDate, gEndDate, gRegDate, uId(FK), progress
+GroupCommentDTO : grContent, grDate, gIndex(FK), uId(FK)
+BoardDTO : bIndex, bName, bTitle, bContent, bIndent, bStep, bGroup, gIndex(FK)
+BoardCommentDTO : 
+CalenderDTO : 
+MapDTO : gIndex(FK), mLocation
+QuizDTO : qIndex, qquestion, 미완 
+
+or
+
+(board, quiz테이블 동적생성시)
+MemberInfoDTO : uId, uPw, uEmail, uPhoneNum(01011112222), uSi, uDo, uPhoto, uGender, uIntroduce, uRegDate, 인증여부(True/False boolean)
+MemberStatDTO : checkSuccess, checkCount, studySuccess, studyCount, kickCount, ban, uId(FK),gIndex(FK), accept
+GroupDTO : gIndex, gName, gTitle, gIntroduce, gType ,gDo, gDifficult, gSi, gStartDate, gEndDate, gRegDate, uId(FK), progress
+GroupCommentDTO : gcComment, gcDate, gIndex(FK) 
+BoardDTO : bIndex, uId(FK), bTitle, bContent, bIndent, bStep, bGroup
+BoardCommentDTO : 
+CalenderDTO : startDate, endDate, title, className, allDay
+MapDTO : gIndex(FK), mLocation
+QuizDTO : qIndex, qQuestion, answer1, answer2, answer3, answer4, answer5, qRightAnswer, qExplain, uId(FK), qRegDate
+File : gIndex(FK), name, destination
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

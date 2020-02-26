@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.groophy.dto.MemberInfoDTO" alias="memberInfoDTO"/>
+		<typeAlias type="com.groophy.dto.MemberStatDTO" alias="memberStatDTO"/>
+		<typeAlias type="com.groophy.dto.GroupDTO" alias="groupDTO"/>
+		<typeAlias type="com.groophy.dto.GroupCommentDTO" alias="groupCommentDTO"/>
+		<typeAlias type="com.groophy.dto.GroupKeyDTO" alias="groupKeyDTO"/>
+		<typeAlias type="com.groophy.dto.CalendarDTO" alias="calendarDTO"/>
+		<typeAlias type="com.groophy.dto.MapDTO" alias="mapDTO"/>
+	</typeAliases>
+</configuration>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.groophy.dao.MemberDAO">
+	<resultMap type="memberInfoDTO" id="memberInfoDTO">
+		<result property="uId" column="MEMBER_ID" />
+		<result property="uPw" column="PASSWORD" />
+		<result property="uNickName" column="NICKNAME" />
+		<result property="uEmail" column="EMAIL" />
+		<result property="uPhone" column="PHONE" />
+		<result property="uGender" column="GENDER" />
+		<result property="uPhoto" column="MEMBER_PHOTO" />
+		<result property="uIntroduce" column="MEMBER_INTRODUCE" />
+		<result property="uRegDate" column="MEMBER_REGDATE" />
+	</resultMap>
+	<resultMap type="memberStatDTO" id="memberStatDTO">
+		<result property="uId" column="MEMBER_ID" />
+		<result property="gIndex" column="GROUP_ID" />
+		<result property="accept" column="ACCEPT" />
+		<result property="studyCount" column="STUDYCOUNT" />
+		<result property="studySuccess" column="STUDYSUCCESS" />
+		<result property="kickCount" column="KICKCOUNT" />
+		<result property="checkCount" column="CHECKCOUNT" />
+		<result property="checkSuccess" column="CHECKSUCCESS" />
+		<result property="ban" column="BAN" />
+	</resultMap>
+	
+
+	<update id="updateLeaderStat" parameterType="memberStatDTO">
+		UPDATE MEMBER_STAT SET GROUP_ID=#{gIndex}, ACCEPT=1 WHERE MEMBER_ID=#{uId}
+	</update>
+	<insert id="insertToMemberInfo" parameterType="memberInfoDTO">
+		INSERT INTO MEMBER_INFO VALUES(#{uId},#{uPw},#{uNickName},#{uEmail},#{uPhone},#{uGender},#{uPhoto},#{uIntroduce},NOW())	
+	</insert>
+	<insert id="insertToMemberStat" parameterType="string">
+		<!-- INSERT INTO MEMBER_STAT VALUES(#{uId},#{gIndex},#{accept},#{studyCount},#{studySuccess},#{kickCount},#{checkCount},#{checkSuccess},#{ban}) -->
+		INSERT INTO MEMBER_STAT VALUES(#{uId},0,0,0,0,0,0,0,0)
+	</insert>
+	<select id="getMemberInfoDTO" parameterType="string" resultMap="memberInfoDTO">
+		SELECT * FROM MEMBER_INFO WHERE MEMBER_ID=#{uId}
+	</select>
+	<select id="getMemberStatDTO" parameterType="string" resultMap="memberStatDTO">
+		SELECT * FROM MEMBER_STAT WHERE MEMBER_ID=#{uId}
+	</select>
+	<select id="getUid" parameterType="string" resultType="string">
+		SELECT MEMBER_ID FROM MEMBER_INFO WHERE EMAIL=#{uEmail}
+	</select>
+	<update id="updatePassword" parameterType="memberInfoDTO">
+		UPDATE MEMBER_INFO SET PASSWORD=#{uPw} WHERE MEMBER_ID=#{uId} AND EMAIL=#{uEmail}
+	</update>
+	<update id="updateMemberInfo" parameterType="memberInfoDTO">
+		UPDATE MEMBER_INFO SET PASSWORD=#{uPw}, NICKNAME=#{uNickName}, PHONE=#{uPhone}, GENDER=#{uGender}, MEMBER_PHOTO=#{uPhoto}, MEMBER_INTRODUCE=#{uIntroduce} WHERE MEMBER_ID=#{uId}
+	</update>
+	<update id="updateCheckCount" parameterType="int">
+		...
+	</update>
+	<delete id="deleteMemberInfo" parameterType="string">
+		 DELETE FROM MEMBER_INFO WHERE MEMBER_ID=#{uId}
+	</delete>
+	<delete id="deleteMemberStat" parameterType="string">
+		DELETE FROM MEMBER_STAT WHERE MEMBER_ID=#{uId}
+	</delete>
+	<update id="applyGroup" parameterType="memberStatDTO">
+		UPDATE MEMBER_STAT SET GROUP_ID=#{gIndex} WHERE MEMBER_ID=#{uId}
+	</update>
+	<update id="cancelApply" parameterType="string">
+		UPDATE MEMBER_STAT SET GROUP_ID=0, ACCEPT=0 WHERE MEMBER_ID=#{uId}
+	</update>
+	<update id="applyAccept" parameterType="string">
+		UPDATE MEMBER_STAT SET ACCEPT=1 WHERE MEMBER_ID=#{uId}
+	</update>
+	<update id="getDefaultApplyMembers" parameterType="int">
+		UPDATE MEMBER_STAT SET GROUP_ID=0 WHERE GROUP_ID=#{gIndex} AND ACCEPT=0
+	</update>
+	<update id="getDefaultAcceptMembers" parameterType="int">
+		UPDATE MEMBER_STAT SET GROUP_ID=0, ACCEPT=0 WHERE GROUP_ID=#{gIndex} AND ACCEPT=1
+	</update>	
+	<update id="increaseStudyCount" parameterType="int">
+		UPDATE MEMBER_STAT SET STUDYCOUNT=STUDYCOUNT+1 WHERE GROUP_ID=#{gIndex} AND ACCEPT=1
+	</update>
+	<select id="getMemberStat" parameterType="string" resultMap="memberStatDTO">
+		SELECT * FROM MEMBER_STAT WHERE MEMBER_ID=#{uId}
+	</select>
+	<select id="getApplyList" parameterType="int" resultType="map">
+		SELECT * FROM MEMBER_STAT 
+		INNER JOIN MEMBER_INFO
+		ON MEMBER_STAT.MEMBER_ID = MEMBER_INFO.MEMBER_ID  
+		WHERE GROUP_ID=#{gIndex} AND ACCEPT=0
+	</select>
+	<select id="getAcceptList" parameterType="int" resultType="map">
+		SELECT * FROM MEMBER_STAT 
+		INNER JOIN MEMBER_INFO
+		ON MEMBER_STAT.MEMBER_ID = MEMBER_INFO.MEMBER_ID  
+		WHERE GROUP_ID=#{gIndex} AND ACCEPT=1
+	</select>
+	<select id="getPassword" parameterType="string" resultType="string">
+		SELECT PASSWORD FROM MEMBER_INFO WHERE MEMBER_ID=#{uId}
+	</select>
+</mapper>
