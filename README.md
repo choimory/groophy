@@ -43,6 +43,8 @@ PM 을 맡아 기획, 진행, 문서작성을 이끌었으며,
 
 # 회원 가입
 
+![text](/images/read%20me/join.png "")
+
 회원가입 페이지 입니다.  
 Spring Security 를 이용해 비밀번호를 암호화 하여 저장하며,  
 Apache commons io 를 이용한 파일 업로드 기능이 포함되어 있습니다. 
@@ -62,6 +64,8 @@ DB에 저장된 암호화된 비밀번호를 Spring Security를 이용해 입력
 
 # 회원 정보
 
+![text](/images/read%20me/member%20info.png "")
+
 회원정보 페이지 입니다.  
 로그인시 저장된 세션 을 이용해 해당 회원의 정보를 DB로부터 불러옵니다.  
 로그인 여부를 확인하는 인터셉터 기능이 적용되어 있습니다.
@@ -78,6 +82,8 @@ DB에 저장된 암호화된 비밀번호를 Spring Security를 이용해 입력
 
 # 그룹 검색
 
+![text](/images/read%20me/group%20search.png "")
+
 그룹 검색 페이지 입니다.  
 Mybatis 의 DynamicSQL을 이용해,  
 조건에 해당하는 그룹 목록을 동적으로 가져옵니다.
@@ -89,6 +95,8 @@ Mybatis 의 DynamicSQL을 이용해,
 
 # 그룹 모집
 
+![text](/images/read%20me/group%20incruit.jpg "")
+
 그룹 모집 페이지입니다.  
 해당 그룹의 정보 확인 및 참여 신청, 댓글을 작성할 수 있습니다.
 
@@ -97,6 +105,8 @@ Mybatis 의 DynamicSQL을 이용해,
 
 
 # 그룹 정보
+
+![text](/images/read%20me/group%20info.png "")
 
 그룹 관리 페이지 입니다.  
 해당 그룹의 각종 정보들을 DB로부터 읽어옵니다.  
@@ -109,6 +119,8 @@ Mybatis 의 DynamicSQL을 이용해,
 
 # 멤버 수락
 
+![text](/images/read%20me/group%20accept.png "")
+
 그룹 참여를 신청한 회원들의 목록입니다.  
 특정 그룹에 참여 신청한 사람들의 정보를 DB로부터 읽어옵니다.
 
@@ -117,6 +129,8 @@ Mybatis 의 DynamicSQL을 이용해,
 
 
 # 멤버 목록
+
+![text](/images/read%20me/group%20member.png "")
 
 참여가 확정된 회원들의 목록입니다.  
 신청이 수락된 회원들만 DB로부터 읽어옵니다.
