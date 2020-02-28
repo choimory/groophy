@@ -2,6 +2,12 @@
 
 MVC2 패턴을 적용시킨 스터디그룹 모집 사이트 입니다.
 
+### 사용기술
+
+- Java, JSP, Spring, MySQL, JdbcTemplate, Mybatis  
+- Bootstrap  
+- TortoiseSVN
+
 ***
 
 
